@@ -78,4 +78,21 @@ public abstract class Titulo {
     public void setFilaEspera(ArrayList<Cliente> filaEspera) {
         this.filaEspera = filaEspera;
     }
+
+    public final void imprimirComprovanteRenovacao(){
+        String comprovante = "====================================\n" +
+                "      COMPROVANTE DE RENOVAÇÃO      \n" +
+                "====================================\n" +
+                " ID do Título: " + this.id + "\n" +
+                " Nome: " + this.titulo + "\n" +
+                " Ano de Lançamento: " + this.ano + "\n" +
+                " Status Atual: " + this.status + "\n" +
+                " Preço Base: R$ " + String.format("%.2f", this.precoBase) + "\n" +
+                "====================================\n" +
+                "   Renovação efetuada com sucesso!  \n" +
+                "====================================";
+
+        // Exibe no console para registro do sistema
+        System.out.println(comprovante);
+    }
 }
