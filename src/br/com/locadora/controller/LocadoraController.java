@@ -117,5 +117,74 @@ public class LocadoraController {
 
     }
 
+    public ArrayList<Titulo> sugerirTitulo(){
+        ArrayList<Titulo> listaOrdenadaAlugados = new ArrayList<>(this.acervo);
+        int size = listaOrdenadaAlugados.size();
+
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                Titulo t1 = listaOrdenadaAlugados.get(j);
+                Titulo t2 = listaOrdenadaAlugados.get(j + 1);
+
+                if (t2.getContadorLocacoes() > t1.getContadorLocacoes()) {
+                    listaOrdenadaAlugados.set(j, t2);
+                    listaOrdenadaAlugados.set(j + 1, t1);
+                }
+            }
+        }
+
+        ArrayList<Titulo> sugestoes = new ArrayList<>();
+
+        for(Titulo t : listaOrdenadaAlugados){
+            if(t.getStatus() == StatusTitulo.DISPONIVEL){
+                sugestoes.add(t);
+            }
+
+            if(sugestoes.size() == 3){
+                break;
+            }
+        }
+
+        return sugestoes;
+    }
+
+    public ArrayList<Titulo> sugerirTitulo(int idTituloAnteriror) throws TituloNaoEncontradoException{
+        Titulo anterior = buscarTituloId(idTituloAnteriror);
+
+        ArrayList<Titulo> listaOrdenadaGenero = new ArrayList<>(this.acervo);
+        int size = listaOrdenadaGenero.size();
+
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                Titulo t1 = listaOrdenadaGenero.get(j);
+                Titulo t2 = listaOrdenadaGenero.get(j + 1);
+
+                if (t2.getContadorLocacoes() > t1.getContadorLocacoes()) {
+                    listaOrdenadaGenero.set(j, t2);
+                    listaOrdenadaGenero.set(j + 1, t1);
+                }
+            }
+        }
+
+        ArrayList<Titulo> sugestoes = new ArrayList<>();
+
+        for(Titulo t : listaOrdenadaGenero){
+            if(t.getStatus() == StatusTitulo.DISPONIVEL && t.getId() != anterior.getId()){
+                if ((anterior instanceof Filme && t instanceof Filme) ||
+                        (anterior instanceof Jogo && t instanceof Jogo) ||
+                        (anterior instanceof Serie && t instanceof Serie)) {
+
+                    sugestoes.add(t);
+                }
+            }
+
+            if(sugestoes.size() == 3){
+                break;
+            }
+        }
+
+        return sugestoes;
+
+    }
 
 }
